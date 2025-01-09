@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Vaccine;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,18 +12,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('vaccines', function (Blueprint $table) {
+        Schema::create('vaccine_lots', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
+            $table->foreignIdFor(Vaccine::class)->constrained()->cascadeOnDelete();
+            $table->string('lot_id');
+            $table->date('expiration_date');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Run the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('vaccines');
+        Schema::dropIfExists('vaccine_lots');
     }
 };
