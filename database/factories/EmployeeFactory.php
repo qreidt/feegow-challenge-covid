@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Employee;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -13,9 +14,9 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'cpf' => $this->faker->word(),
+            'cpf' => $this->faker->cpf(),
             'name' => $this->faker->name(),
-            'birth_date' => $this->faker->dateTimeBetween('-60 years', '-20 years'),
+            'birth_date' => new CarbonImmutable($this->faker->dateTimeBetween('-60 years', '-20 years')),
             'has_comorbidity' => $this->faker->boolean(),
             'created_at' => now(),
             'updated_at' => now(),

@@ -21,6 +21,7 @@ class Employee extends Model
 
     protected $casts = [
         'birth_date' => 'immutable_date',
+        'has_comorbidity' => 'boolean',
     ];
 
     public function employeeVaccines(): HasMany
