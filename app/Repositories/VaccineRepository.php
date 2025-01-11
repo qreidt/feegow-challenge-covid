@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use app\Dtos\Vaccine\CreateVaccineDto;
 use App\Models\Vaccine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -46,5 +47,13 @@ readonly class VaccineRepository
     {
         $vaccines = $this->getVaccinesFromDatabase();
         Cache::put(static::vaccine_list_key, $vaccines->toArray());
+    }
+
+    public function createVaccine(CreateVaccineDto $dto): Vaccine
+    {
+        $vaccine = Vaccine::create($dto->toArray());
+        $this->updateVaccinesCache();
+
+        return $vaccine;
     }
 }

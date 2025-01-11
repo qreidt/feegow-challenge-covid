@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Dtos\Vaccine\CreateVaccineDto;
 use App\Models\Vaccine;
 use App\Repositories\VaccineRepository;
 use Illuminate\Support\Collection;
@@ -29,5 +30,10 @@ readonly class VaccineService
         }
 
         return $vaccines;
+    }
+
+    public function createVaccine(CreateVaccineDto $dto): Vaccine
+    {
+        return $this->repository->createVaccine($dto);
     }
 }
