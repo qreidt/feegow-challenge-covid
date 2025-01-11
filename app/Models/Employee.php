@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
@@ -20,4 +22,9 @@ class Employee extends Model
     protected $casts = [
         'birth_date' => 'immutable_date',
     ];
+
+    public function employeeVaccines(): HasMany
+    {
+        return $this->hasMany(EmployeeVaccines::class);
+    }
 }

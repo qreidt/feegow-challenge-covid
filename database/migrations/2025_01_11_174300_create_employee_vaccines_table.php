@@ -1,0 +1,28 @@
+<?php
+
+use App\Models\Employee;
+use App\Models\VaccineLot;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('employee_vaccines', function (Blueprint $table) {
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->unsignedSmallInteger('dose_number');
+            $table->foreignId('vaccine_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('vaccine_lot_id')->constrained()->cascadeOnDelete();
+            $table->date('applied_at');
+
+            $table->primary(['employee_id', 'dose_number']);
+            $table->index(['employee_id', 'dose_number', 'vaccine_id', 'vaccine_lot_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('employee_vaccines');
+    }
+};

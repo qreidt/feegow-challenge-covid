@@ -24,15 +24,31 @@ erDiagram
         string cpf UK
         date birh_date
         bool has_comorbity
-        datetime created_at
-        datetime updated_at
-        datetime deleted_at
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
     }
+    
+    employee_vaccines {
+        int employee_id PK,FK
+        int dose_number PK
+        int vaccine_id FK
+        int vaccine_lot_id FK
+        date applied_at
+        timestamp created_at
+    }
+
+    employees || -- o{ employee_vaccines : has-many
+    vaccines |o -- o{ employee_vaccines : has-many
+    vaccine_lots |o -- o{ employee_vaccines : has-many
 ```
 
 ### Vacinas
-Cada vacina pode ter vários lotes.
-Cada lote de vacina possui apenas uma data de validate.
+- Cada vacina pode ter vários lotes.
+- Cada lote de vacina possui apenas uma data de validate.
 
 # Funcionários
-Cada CPF de funcionário é único.
+- Cada CPF de funcionário é único.
+- Um funcionário pode receber até 3 doses de vacina.
+- Cada vacina aplicada no funcionário pode ser de marca diferente
+e possuir lotes e datas de validades diferentes entre elas.
