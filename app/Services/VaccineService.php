@@ -55,4 +55,15 @@ readonly class VaccineService
     {
         return $this->repository->updateVaccine($vaccine, $dto);
     }
+
+    /**
+     * Remove os dados de uma vacina
+     *
+     * @param Vaccine $vaccine
+     * @return void
+     */
+    public function deleteVaccine(Vaccine $vaccine): void
+    {
+        $this->repository->deleteVaccine($vaccine);
+    }
 }

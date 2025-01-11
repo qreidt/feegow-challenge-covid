@@ -80,4 +80,16 @@ readonly class VaccineRepository
 
         return $vaccine;
     }
+
+    /**
+     * Remove uma vacina do banco de dados e da lista de vacinas
+     *
+     * @param Vaccine $vaccine
+     * @return void
+     */
+    public function deleteVaccine(Vaccine $vaccine): void
+    {
+        $vaccine->delete();
+        $this->updateVaccinesCache();
+    }
 }

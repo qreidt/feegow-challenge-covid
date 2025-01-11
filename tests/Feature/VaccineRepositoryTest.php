@@ -75,3 +75,16 @@ it('updates a vaccine in the database', function () {
         ...$new_vaccine_data->toArray(),
     ]);
 });
+
+
+
+it('deletes a vaccine from the database', function () {
+    $repository = new VaccineRepository();
+    $vaccine = Vaccine::factory()->create();
+
+    $repository->deleteVaccine($vaccine);
+
+    \Pest\Laravel\assertDatabaseMissing('vaccines', [
+        'id' => $vaccine->id,
+    ]);
+});
