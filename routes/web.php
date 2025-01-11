@@ -3,6 +3,11 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers;
+
+if (app()->isLocal() && file_exists(app_path('Http/Controllers/DevController.php'))) {
+    Route::get('/dev', Controllers\DevController::class);
+}
 
 Route::redirect('/', '/login');
 

@@ -6,7 +6,7 @@ use App\Dtos\Employee\CreateEmployeeDto;
 use App\Dtos\Employee\UpdateEmployeeDto;
 use App\Models\Employee;
 
-class EmployeeService
+readonly class EmployeeService
 {
 
     /**
