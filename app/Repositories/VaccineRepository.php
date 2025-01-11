@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use app\Dtos\Vaccine\CreateVaccineDto;
+use App\Dtos\Vaccine\UpdateVaccineDto;
 use App\Models\Vaccine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -49,9 +50,32 @@ readonly class VaccineRepository
         Cache::put(static::vaccine_list_key, $vaccines->toArray());
     }
 
+    /**
+     * Armazena uma nova vacina e atualiza lista em cache de vacinas
+     *
+     * @param CreateVaccineDto $dto
+     * @return Vaccine
+     */
     public function createVaccine(CreateVaccineDto $dto): Vaccine
     {
         $vaccine = Vaccine::create($dto->toArray());
+        $this->updateVaccinesCache();
+
+        return $vaccine;
+    }
+
+    /**
+     * Atualiza os dados de uma vacina e atualiza lista em cache de vacinas
+     *
+     * @param Vaccine $vaccine
+     * @param UpdateVaccineDto $dto
+     * @return Vaccine
+     */
+    public function updateVaccine(Vaccine $vaccine, UpdateVaccineDto $dto): Vaccine
+    {
+        $vaccine->fill($dto->toArray());
+        $vaccine->save();
+
         $this->updateVaccinesCache();
 
         return $vaccine;

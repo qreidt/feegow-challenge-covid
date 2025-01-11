@@ -5,7 +5,7 @@ namespace App\Dtos\Vaccine;
 use App\Dtos\BaseDto;
 use Illuminate\Support\Facades\Validator;
 
-readonly class CreateVaccineDto extends BaseDto
+readonly class UpdateVaccineDto extends BaseDto
 {
 
     public function __construct(
