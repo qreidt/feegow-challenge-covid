@@ -17,6 +17,7 @@ it('saves an employee to the database', function () {
     );
 
     $employee = $service->createEmployee($dto);
+    $employee = Employee::find($employee->id);
 
     expect($employee->toArray())->toEqual([
         'id' => $employee->id,
@@ -24,7 +25,7 @@ it('saves an employee to the database', function () {
     ]);
 });
 
-it('updates an employee to the database', function () {
+it('updates an employee in the database', function () {
     $service = new EmployeeService();
     $employee = Employee::factory()->create();
     $new_employee_data = Employee::factory()->make();
@@ -35,11 +36,37 @@ it('updates an employee to the database', function () {
         has_comorbidity: $new_employee_data->has_comorbidity,
     );
 
-    $updated_employee = $service->updateEmployee($employee, $dto);
+    $service->updateEmployee($employee, $dto);
+    $updated_employee = Employee::find($employee->id);
 
     expect($updated_employee->toArray())->toEqual([
         ...$new_employee_data->toArray(),
         'id' => $employee->id,
         'cpf' => $employee->cpf,
+    ]);
+});
+
+it('soft deletes an employee in the database', function () {
+    $service = new EmployeeService();
+    $employee = Employee::factory()->create();
+
+    $service->softDeleteEmployee($employee);
+
+    \Pest\Laravel\assertDatabaseHas('employees', [
+        'id' => $employee->id,
+        'deleted_at' => now(),
+    ]);
+});
+
+it('recovers soft deleted employee in the database', function () {
+    $service = new EmployeeService();
+    $employee = Employee::factory()->create();
+
+    $service->softDeleteEmployee($employee);
+    $service->recoverEmployee($employee->id);
+
+    \Pest\Laravel\assertDatabaseHas('employees', [
+        'id' => $employee->id,
+        'deleted_at' => null,
     ]);
 });

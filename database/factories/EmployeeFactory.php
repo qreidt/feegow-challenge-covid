@@ -20,6 +20,7 @@ class EmployeeFactory extends Factory
             'has_comorbidity' => $this->faker->boolean(),
             'created_at' => now(),
             'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }
