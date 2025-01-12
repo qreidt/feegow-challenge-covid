@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Jetstream/Dropdown.vue';
 import DropdownLink from '@/Components/Jetstream/DropdownLink.vue';
 import NavLink from '@/Components/Jetstream/NavLink.vue';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink.vue';
+import PrimaryButton from "../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Components/PrimaryButton.vue";
 
 defineProps({
     title: String,
@@ -50,6 +51,10 @@ const logout = () => {
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+
+                                <NavLink :href="route('vaccines.index')" :active="route().current('vaccines.*')">
+                                    Vacinas
                                 </NavLink>
                             </div>
                         </div>
@@ -275,8 +280,14 @@ const logout = () => {
 
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white dark:bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-row justify-between">
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight flex flex-col justify-center">
+                        <slot name="header" />
+                    </h2>
+
+                    <div v-if="$slots.actions" class="">
+                        <slot name="actions" />
+                    </div>
                 </div>
             </header>
 

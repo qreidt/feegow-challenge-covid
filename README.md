@@ -47,7 +47,7 @@ erDiagram
 - Cada vacina pode ter vários lotes.
 - Cada lote de vacina possui apenas uma data de validate.
 
-# Funcionários
+## Funcionários
 - Cada CPF de funcionário é único.
 - Um funcionário pode receber até 3 doses de vacina.
 - Cada vacina aplicada no funcionário pode ser de marca diferente

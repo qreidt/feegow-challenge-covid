@@ -77,7 +77,8 @@ readonly class VaccineLotRepository
         }
 
         return collect($cache)
-            ->map(fn(array $lot) => (new VaccineLot())->forceFill($lot));
+            ->map(fn(array $lot) => (new VaccineLot())->newInstance($lot, true)
+                ->forceFill($lot)->syncOriginal());
     }
 
     /**
@@ -90,7 +91,7 @@ readonly class VaccineLotRepository
     public function findVaccineLotById(int $vaccine_id, int $vaccine_lot_id): ?VaccineLot
     {
         if ($cache = Cache::get(static::getVaccineLotByIdKey($vaccine_id, $vaccine_lot_id))) {
-            return (new VaccineLot())->newInstance($cache, true)->syncOriginal();
+            return (new VaccineLot())->newInstance($cache, true)->forceFill($cache)->syncOriginal();
         }
 
         $vaccine_lot = VaccineLot::query()
@@ -115,7 +116,7 @@ readonly class VaccineLotRepository
     public function findVaccineLotByLotId(int $vaccine_id, string $lot_id): ?VaccineLot
     {
         if ($cache = Cache::get(static::getVaccineLotByLotIdKey($vaccine_id, $lot_id))) {
-            return (new VaccineLot())->newInstance($cache, true)->syncOriginal();
+            return (new VaccineLot())->newInstance($cache, true)->forceFill($cache)->syncOriginal();
         }
 
         $vaccine_lot = VaccineLot::query()
