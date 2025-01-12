@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Dtos\Vaccine\CreateVaccineLotDto;
+use App\Dtos\Vaccine\UpdateVaccineLotDto;
 use App\Models\Vaccine;
 use App\Models\VaccineLot;
 use Illuminate\Support\Collection;
@@ -13,10 +15,10 @@ readonly class VaccineLotRepository
     /**
      * Chave para valores de cada lista de lotes de vacina
      *
-     * @param Vaccine $vaccine
+     * @param int $vaccine_id
      * @return string
      */
-    private static function getVaccineLotKey(Vaccine $vaccine): string
+    private static function getVaccineLotKey(int $vaccine_id): string
     {
         return `vacine:{$vaccine->id}:lots`;
     }
@@ -25,13 +27,13 @@ readonly class VaccineLotRepository
      * Buscar lista de lotes existentes que pertencem à vacina provida armazenados
      * no banco de dados
      *
-     * @param Vaccine $vaccine
+     * @param int $vaccine_id
      * @return Collection
      */
-    public function getVaccineLotsFromDatabase(Vaccine $vaccine): Collection
+    public function getVaccineLotsFromDatabase(int $vaccine_id): Collection
     {
         return VaccineLot::query()
-            ->whereBelongsTo($vaccine)
+            ->where('vaccine_id', '=', $vaccine_id)
             ->get();
     }
 
@@ -39,12 +41,12 @@ readonly class VaccineLotRepository
      * Retornar lista de lotes existentes que percentem à vacina provida armazenada
      * em cache
      *
-     * @param Vaccine $vaccine
-     * @return Collection
+     * @param int $vaccine_id
+     * @return null|Collection
      */
-    public function getVaccineLotsCache(Vaccine $vaccine): ?Collection
+    public function getVaccineLotsCache(int $vaccine_id): ?Collection
     {
-        $cache = Cache::get(static::getVaccineLotKey($vaccine));
+        $cache = Cache::get(static::getVaccineLotKey($vaccine_id));
 
         if (! $cache) {
             return null;
@@ -57,12 +59,49 @@ readonly class VaccineLotRepository
     /**
      * Atualizar cache da lista de lotes para a vacina provida
      *
-     * @param Vaccine $vaccine
+     * @param int $vaccine_id
      * @return void
      */
-    public function updateVaccineLotCache(Vaccine $vaccine): void
+    public function updateVaccineLotCache(int $vaccine_id): void
     {
-        $vaccine_lots = $this->getVaccineLotsFromDatabase($vaccine);
-        Cache::put(static::getVaccineLotKey($vaccine), $vaccine_lots->toArray());
+        $vaccine_lots = $this->getVaccineLotsFromDatabase($vaccine_id);
+        Cache::put(static::getVaccineLotKey($vaccine_id), $vaccine_lots->toArray());
+    }
+
+    public function createVaccineLot(CreateVaccineLotDto $dto): VaccineLot
+    {
+        $vaccine_lot = VaccineLot::create($dto->toArray());
+        $this->updateVaccineLotCache($dto->vaccine_id);
+
+        return $vaccine_lot;
+    }
+
+    /**
+     * Atualizar o registro de um lote de vacina no banco de dados
+     *
+     * @param VaccineLot $vaccine_lot
+     * @param UpdateVaccineLotDto $dto
+     * @return VaccineLot
+     */
+    public function updateVaccineLot(VaccineLot $vaccine_lot, UpdateVaccineLotDto $dto): VaccineLot
+    {
+        $vaccine_lot->forceFill($dto->toArray());
+        $vaccine_lot->save();
+
+        $this->updateVaccineLotCache($vaccine_lot->vaccine_id);
+
+        return $vaccine_lot;
+    }
+
+    /**
+     * Remover o registro de um lote de vacina no banco de dados
+     *
+     * @param VaccineLot $vaccine_lot
+     * @return void
+     */
+    public function deleteVaccineLot(VaccineLot $vaccine_lot): void
+    {
+        $vaccine_lot->delete();
+        $this->updateVaccineLotCache($vaccine_lot->vaccine_id);
     }
 }
