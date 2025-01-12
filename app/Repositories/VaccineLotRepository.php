@@ -90,7 +90,7 @@ readonly class VaccineLotRepository
     public function findVaccineLotById(int $vaccine_id, int $vaccine_lot_id): ?VaccineLot
     {
         if ($cache = Cache::get(static::getVaccineLotByIdKey($vaccine_id, $vaccine_lot_id))) {
-            return (new VaccineLot())->forceFill($cache);
+            return (new VaccineLot())->newInstance($cache, true)->syncOriginal();
         }
 
         $vaccine_lot = VaccineLot::query()
@@ -115,7 +115,7 @@ readonly class VaccineLotRepository
     public function findVaccineLotByLotId(int $vaccine_id, string $lot_id): ?VaccineLot
     {
         if ($cache = Cache::get(static::getVaccineLotByLotIdKey($vaccine_id, $lot_id))) {
-            return (new VaccineLot())->forceFill($cache);
+            return (new VaccineLot())->newInstance($cache, true)->syncOriginal();
         }
 
         $vaccine_lot = VaccineLot::query()

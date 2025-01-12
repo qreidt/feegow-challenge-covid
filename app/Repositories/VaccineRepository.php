@@ -35,7 +35,7 @@ readonly class VaccineRepository
         }
 
         return collect($cache)
-            ->map(fn(array $vaccine) => (new Vaccine())->forceFill($vaccine));
+            ->map(fn(array $vaccine) => (new Vaccine())->newInstance($vaccine, true)->syncOriginal());
     }
 
     /**
