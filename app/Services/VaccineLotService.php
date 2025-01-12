@@ -28,10 +28,34 @@ readonly class VaccineLotService
 
         if (! $vaccine_lots) {
             $vaccine_lots = $this->repository->getVaccineLotsFromDatabase($vaccine->id);
-            $this->repository->updateVaccineLotCache($vaccine->id);
+            $this->repository->updateVaccineLotListCache($vaccine->id);
         }
 
         return $vaccine_lots;
+    }
+
+    /**
+     * Buscar um lote de vacina por ID
+     *
+     * @param int $vaccine_id
+     * @param int $vaccine_lot_id
+     * @return VaccineLot|null
+     */
+    public function findVaccineLotById(int $vaccine_id, int $vaccine_lot_id): ?VaccineLot
+    {
+        $this->repository->findVaccineLotById($vaccine_id, $vaccine_lot_id);
+    }
+
+    /**
+     * Buscar um lote de vacina por ID externo da vacina
+     *
+     * @param int $vaccine_id
+     * @param string $lot_id
+     * @return VaccineLot|null
+     */
+    public function findVaccineLotByLotId(int $vaccine_id, string $lot_id): ?VaccineLot
+    {
+        $this->repository->findVaccineLotByLotId($vaccine_id, $lot_id);
     }
 
     /**
