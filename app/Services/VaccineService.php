@@ -26,8 +26,7 @@ readonly class VaccineService
 
         if ($vaccines === null) {
             $vaccines = $this->repository->getVaccinesFromDatabase();
-
-            $this->repository->updateVaccinesCache($vaccines);
+            $this->repository->updateVaccinesCache();
         }
 
         return $vaccines;
