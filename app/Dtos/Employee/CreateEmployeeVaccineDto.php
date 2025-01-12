@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Dtos\Employee;
+
+use App\Dtos\BaseDto;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Validator;
+
+readonly class CreateEmployeeVaccineDto extends BaseDto
+{
+
+    public function __construct(
+        public int             $employee_id,
+        public int             $vaccine_id,
+        public int             $dose_number,
+        public CarbonImmutable $applied_at,
+        public string          $lot_id,
+        public CarbonImmutable $expiration_date,
+    )
+    {
+    }
+
+    public function validateFromArray(array $data): static
+    {
+        $validated = Validator::validate($data, [
+            'employee_id' => ['required', 'int', 'exists:employees,id'],
+            'vaccine_id' => ['required', 'int', 'exists:vaccines,id'],
+            'dose_number' => ['required', 'int', 'min:1', 'max:3'],
+            'applied_at' => ['required', 'date', 'before_or_equal:today'],
+            'lot_id' => ['required', 'string', 'min:1', 'max:255'],
+            'expiration_date' => ['required', 'date'],
+        ]);
+
+        return new static(
+            employee_id: $validated['employee_id'],
+            vaccine_id: $validated['vaccine_id'],
+            dose_number: $validated['dose_number'],
+            applied_at: $validated['applied_at'],
+
+            lot_id: $validated['lot_id'],
+            expiration_date: $validated['expiration_date'],
+        );
+    }
+}

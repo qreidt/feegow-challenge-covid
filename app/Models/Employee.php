@@ -26,6 +26,6 @@ class Employee extends Model
 
     public function employeeVaccines(): HasMany
     {
-        return $this->hasMany(EmployeeVaccines::class);
+        return $this->hasMany(EmployeeVaccine::class);
     }
 }

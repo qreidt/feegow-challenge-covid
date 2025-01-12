@@ -7,6 +7,7 @@ use App\Dtos\Vaccine\UpdateVaccineLotDto;
 use App\Models\Vaccine;
 use App\Models\VaccineLot;
 use App\Repositories\VaccineLotRepository;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 
 readonly class VaccineLotService
@@ -67,6 +68,17 @@ readonly class VaccineLotService
     public function createVaccineLot(CreateVaccineLotDto $dto): VaccineLot
     {
         return $this->repository->createVaccineLot($dto);
+    }
+
+    public function findOrCreateVaccineLot(int $vaccine_id, string $lot_id, CarbonImmutable $expiration_date): VaccineLot
+    {
+        if ($vaccine_lot = $this->findVaccineLotByLotId($vaccine_id, $lot_id)) {
+            return $vaccine_lot;
+        }
+
+        return $this->createVaccineLot(new CreateVaccineLotDto(
+            vaccine_id: $vaccine_id,lot_id: $lot_id, expiration_date: $expiration_date
+        ));
     }
 
     /**

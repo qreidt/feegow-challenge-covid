@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Employee;
-use App\Models\EmployeeVaccines;
+use App\Models\EmployeeVaccine;
 use App\Models\Vaccine;
 use App\Models\VaccineLot;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class EmployeeVaccinesFactory extends Factory
 {
-    protected $model = EmployeeVaccines::class;
+    protected $model = EmployeeVaccine::class;
 
     public function definition(): array
     {
