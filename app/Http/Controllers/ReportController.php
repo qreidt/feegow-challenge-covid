@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Jobs\GenerateReport;
 use App\Models\Report;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,6 +15,10 @@ class ReportController extends Controller
      */
     public function index(): Response
     {
+        $pending_reports = Report::query()
+            ->whereNull('ready_at')
+            ->get();
+
         $reports = Report::query()
             ->orderByDesc('id')
             ->whereNotNull('ready_at')
@@ -26,7 +29,7 @@ class ReportController extends Controller
             return $report;
         });
 
-        return Inertia::render('Reports/ReportsListPage', compact('reports'));
+        return Inertia::render('Reports/ReportsListPage', compact('pending_reports', 'reports'));
     }
 
     /**

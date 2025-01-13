@@ -3,11 +3,11 @@
 namespace App\Jobs;
 
 use App\Enums\ReportType;
+use App\Events\ReportProcessingFinished;
 use App\Models\Employee;
 use App\Models\Report;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\LazyCollection;
 
@@ -44,6 +44,8 @@ class GenerateReport implements ShouldQueue
 
         $this->report->ready_at = now();
         $this->report->save();
+
+        broadcast(new ReportProcessingFinished($this->report))->toOthers();
     }
 
     /**
@@ -97,15 +99,5 @@ class GenerateReport implements ShouldQueue
             ->select(['name', 'cpf'])
             ->whereDoesntHave('employeeVaccines')
             ->lazyById();
-    }
-
-    /**
-     * Disparar evento para notificar finalização do processo do relatório
-     *
-     * @return void
-     */
-    public function afterCommit()
-    {
-        //
     }
 }
