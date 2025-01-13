@@ -24,7 +24,7 @@ class EmployeeVaccine extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'applied_at' => 'immutable_date',
+        'applied_at' => 'immutable_date:Y-m-d',
         'dose_number' => 'integer'
     ];
 

@@ -24,5 +24,7 @@ Route::middleware([
         Route::resource('/lots', Controllers\VaccineLotController::class)->only(['update', 'destroy']);
     });
 
+    Route::apiResource('/employees', Controllers\EmployeeController::class)->except('show');
+
 
 });

@@ -20,7 +20,7 @@ class Employee extends Model
     ];
 
     protected $casts = [
-        'birth_date' => 'immutable_date',
+        'birth_date' => 'immutable_date:Y-m-d',
         'has_comorbidity' => 'boolean',
     ];
 
