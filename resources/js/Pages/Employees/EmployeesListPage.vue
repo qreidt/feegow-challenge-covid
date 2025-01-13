@@ -44,9 +44,10 @@ function openEmployeeFormModal(employee = null) {
 }
 
 function submitEmployeeForm() {
-    employee_form.slug = employee_form.slug.toUpperCase();
     employee_form.post(route('employees.store'), {
-        onSuccess: toggleCreateModal
+        onSuccess: () => {
+            show_employee_form_modal.value = false;
+        }
     });
 }
 </script>
@@ -79,7 +80,7 @@ function submitEmployeeForm() {
                         <div class="md:col-span-3">
                             <InputLabel>Nome</InputLabel>
                             <div class="flex flex-col mt-2">
-                                <TextInput v-model="employee_form.name" class="w-full" />
+                                <TextInput v-model="employee_form.name" class="w-full" placeholder="Ex: João Silva" />
                                 <InputError class="mt-2" :message="employee_form.errors.name" />
                             </div>
                         </div>
@@ -87,7 +88,8 @@ function submitEmployeeForm() {
                         <div class="">
                             <InputLabel>CPF</InputLabel>
                             <div class="flex flex-col mt-2">
-                                <TextInput v-model="employee_form.cpf" class="w-full uppercase" />
+                                <TextInput v-model="employee_form.cpf" class="w-full uppercase"
+                                           placeholder="Ex: 123.456.789-00" />
                                 <InputError class="mt-2" :message="employee_form.errors.cpf" />
                             </div>
                         </div>

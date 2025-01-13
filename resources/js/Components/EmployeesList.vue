@@ -24,6 +24,9 @@ defineEmits(['rowClicked']);
                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">
                             Poss. Comorb.
                         </th>
+                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">
+                            Qtd. Doses
+                        </th>
                         <th scope="col" class="px-3 py-3.5 text-sm font-semibold text-right">
                             Ações
                         </th>
@@ -46,6 +49,9 @@ defineEmits(['rowClicked']);
                         </td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-200">
                             {{ employee.has_comorbidity ? 'Sim' : 'Não' }}
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-700 dark:text-gray-200">
+                            {{ employee.doses_count }} doses
                         </td>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                             <div class="text-primary-400 hover:text-primary-300">

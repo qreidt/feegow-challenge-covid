@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,5 +28,11 @@ class Employee extends Model
     public function employeeVaccines(): HasMany
     {
         return $this->hasMany(EmployeeVaccine::class);
+    }
+
+    public function anonimizeCpf(): void
+    {
+        $cpf = substr($this->cpf, 0, 3);
+        $this->setAttribute('cpf', "$cpf.***.***-**");
     }
 }

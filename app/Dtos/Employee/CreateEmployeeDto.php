@@ -23,7 +23,7 @@ readonly class CreateEmployeeDto extends BaseDto
             'name' => ['required', 'string', 'min:1', 'max:255'],
             'cpf' => [
                 'required', 'string', 'size:14',
-                'regex:regex:/^[A-Z0-9]{3}\.[A-Z0-9]{3}\.[A-Z0-9]{3}-[A-Z0-9]{2}$/',
+                'regex:/^[A-Z0-9]{3}\.[A-Z0-9]{3}\.[A-Z0-9]{3}-[A-Z0-9]{2}$/',
                 'unique:users,cpf'
             ],
             'birth_date' => ['required', 'string', 'date', 'before:today'],
@@ -33,7 +33,7 @@ readonly class CreateEmployeeDto extends BaseDto
         return new static(
             name: $validated['name'],
             cpf: $validated['cpf'],
-            birth_date: $validated['birth_date'],
+            birth_date: CarbonImmutable::make($validated['birth_date']),
             has_comorbidity: $validated['has_comorbidity'],
         );
     }
