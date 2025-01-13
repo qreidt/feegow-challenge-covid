@@ -12,12 +12,15 @@ import {useForm} from "@inertiajs/vue3";
 import Checkbox from "@/Components/Jetstream/Checkbox.vue";
 import Select from "@/Components/Form/Select.vue";
 import {$dateFormat} from "@/Helpers/date-helper.js";
+import DangerButton from "@/Components/Jetstream/DangerButton.vue";
 defineProps({
     employees: Object,
     vaccines: Array,
 });
 
 const show_employee_form_modal = ref(false);
+const confirm_employee_archive_modal = ref(false);
+
 const default_employee_form = {
     id: null,
     name: '',
@@ -46,6 +49,8 @@ function openEmployeeFormModal(employee = null) {
 function submitEmployeeForm() {
     if (! employee_form.id) {
         return employee_form.post(route('employees.store'), {
+            preserveScroll: true,
+            preserveState: true,
             onSuccess: () => {
                 show_employee_form_modal.value = false;
             }
@@ -53,11 +58,32 @@ function submitEmployeeForm() {
     }
 
     return employee_form.patch(route('employees.update', employee_form.id), {
+        preserveScroll: true,
+        preserveState: true,
         onSuccess: () => {
             show_employee_form_modal.value = false;
         }
     });
 }
+
+function confirmEmployeeArchive(employee) {
+    const data = Object.assign({}, {...default_employee_form, ...employee});
+    employee_form = useForm(data);
+
+    confirm_employee_archive_modal.value = true;
+}
+
+function archiveEmployee() {
+    employee_form.delete(route('employees.destroy', employee_form.id), {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            confirm_employee_archive_modal.value = false;
+            employee_form = useForm(default_employee_form);
+        }
+    })
+}
+
 </script>
 
 <template>
@@ -74,7 +100,9 @@ function submitEmployeeForm() {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <EmployeesList v-bind="{employees}" @rowClicked="openEmployeeFormModal" />
+                <EmployeesList
+                    v-bind="{employees}" @rowClicked="openEmployeeFormModal"
+                    @confirmDelete="confirmEmployeeArchive" />
             </div>
         </div>
 
@@ -259,6 +287,23 @@ function submitEmployeeForm() {
                         <PrimaryButton type="submit">Salvar</PrimaryButton>
                     </div>
                 </form>
+            </template>
+        </DialogModal>
+
+        <DialogModal
+            maxWidth="md" :show="confirm_employee_archive_modal" @close="confirm_employee_archive_modal = false"
+        >
+            <template #title>
+                Confirmar Arquivamento de Funcionário
+            </template>
+            <template #content>
+                <p class="">Deseja realmente arquivar a ficha do funcionário {{ employee_form.name }}?</p>
+                <p class="mt-2">O funcionário não irá mais aparecer em listagens.</p>
+                <p class="mt-2">Esta ação poderá ser desfeita futuramente.</p>
+            </template>
+            <template #footer>
+                <SecondaryButton @click="confirm_employee_archive_modal = false">Cancelar</SecondaryButton>
+                <DangerButton @click="archiveEmployee()">Sim, Arquivar</DangerButton>
             </template>
         </DialogModal>
     </AppLayout>

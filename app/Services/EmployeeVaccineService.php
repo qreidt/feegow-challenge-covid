@@ -60,6 +60,10 @@ readonly class EmployeeVaccineService
             'applied_at' => $dto->applied_at,
         ]);
 
+        if (! $employee_vaccine->isDirty()) {
+            return $employee_vaccine;
+        }
+
         $query = EmployeeVaccine::query()
             ->where('employee_id', $employee_vaccine->employee_id)
             ->where('dose_number', $employee_vaccine->dose_number);

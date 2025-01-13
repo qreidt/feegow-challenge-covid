@@ -2,7 +2,7 @@
 import {$dateFormat} from "../Helpers/date-helper.js";
 
 defineProps({employees: Object});
-defineEmits(['rowClicked']);
+defineEmits(['rowClicked', 'confirmDelete']);
 </script>
 
 <template>
@@ -56,6 +56,12 @@ defineEmits(['rowClicked']);
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                             <div class="text-primary-400 hover:text-primary-300">
                                 Editar<span class="sr-only">, {{ employee.name }}</span>
+                            </div>
+                            <div
+                                @click.stop="$emit('confirmDelete', employee)"
+                                class="text-red-400 hover:text-red-300"
+                            >
+                                Arquivar<span class="sr-only">, {{ employee.name }}</span>
                             </div>
                         </td>
                     </tr>
