@@ -30,7 +30,7 @@ export function $dateFormat(value, to_format = 'dd/MM/yyyy', from_format = null)
  *
  * @return string
  */
-export function $dateTimeFormat(value, to_format = 'dd/MM/yyyy HH:ii', from_format = null) {
+export function $dateTimeFormat(value, to_format = 'dd/MM/yyyy HH:mm', from_format = null) {
     if (!from_format) {
         return DateTime.fromISO(value).toFormat(to_format);
     }
