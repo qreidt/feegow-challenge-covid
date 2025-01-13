@@ -38,6 +38,7 @@ class EmployeeController extends Controller
     public function index(): Response
     {
         $employees = Employee::query()
+            ->orderBy('name')
             ->with('employeeVaccines')
             ->paginate();
 

@@ -1,5 +1,6 @@
 <script setup>
 import {$dateFormat} from "../Helpers/date-helper.js";
+import Pagination from "@/Components/Pagination.vue";
 
 defineProps({employees: Object});
 defineEmits(['rowClicked', 'confirmDelete']);
@@ -69,5 +70,6 @@ defineEmits(['rowClicked', 'confirmDelete']);
                 </table>
             </div>
         </div>
+        <Pagination :pagination="employees" />
     </div>
 </template>
