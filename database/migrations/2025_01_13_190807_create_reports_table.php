@@ -9,6 +9,8 @@ return new class extends Migration {
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('type')->nullable();
             $table->string('file_path')->nullable();
             $table->dateTime('ready_at')->nullable();
             $table->timestamps();

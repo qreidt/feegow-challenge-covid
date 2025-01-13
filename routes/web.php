@@ -25,6 +25,5 @@ Route::middleware([
     });
 
     Route::apiResource('/employees', Controllers\EmployeeController::class)->except('show');
-
-
+    Route::apiResource('/reports', Controllers\ReportController::class)->only(['index', 'store', 'show']);
 });

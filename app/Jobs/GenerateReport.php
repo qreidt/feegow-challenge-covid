@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\ReportType;
 use App\Models\Employee;
 use App\Models\Report;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,6 +31,9 @@ class GenerateReport implements ShouldQueue
     public function handle(): void
     {
         $path = $this->getFilePath();
+
+        $this->report->name = 'Relatório de Vacinação';
+        $this->report->type = ReportType::CSV;
         $this->report->file_path = $path;
 
         // Cabeçalho + Excel UTF-8 BOM
