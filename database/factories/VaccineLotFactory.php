@@ -17,7 +17,7 @@ class VaccineLotFactory extends Factory
             'vaccine_id' => Vaccine::factory(),
 
             'lot_id' => $this->faker->unique()->regexify('[A-Z]{3}[0-9]{4}-[0-9]{4}'),
-            'expiration_date' => Carbon::now(),
+            'expiration_date' => $this->faker->dateTimeBetween('+4 days', '+6 months'),
         ];
     }
 }

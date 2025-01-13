@@ -22,13 +22,13 @@ readonly class CreateVaccineLotDto extends BaseDto
         $validated = Validator::validate($data, [
             'vaccine_id' => ['required', 'integer', 'exists:vaccines:id'],
             'lot_id' => ['required', 'string', 'min:1', 'max:255'],
-            'expiration_date' => ['required', 'date'],
+            'expiration_date' => ['required', 'string', 'date'],
         ]);
 
         return new static(
             vaccine_id: $validated['vaccine_id'],
             lot_id: $validated['lot_id'],
-            expiration_date: $validated['expiration_date'],
+            expiration_date: CarbonImmutable::make($validated['expiration_date']),
         );
     }
 }

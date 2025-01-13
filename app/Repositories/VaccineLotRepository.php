@@ -171,7 +171,7 @@ readonly class VaccineLotRepository
     public function deleteVaccineLot(VaccineLot $vaccine_lot): void
     {
         $vaccine_lot->delete();
-        $this->updateVaccineLotItemCache($vaccine_lot->vaccine_id);
+        $this->updateVaccineLotItemCache($vaccine_lot);
 
         Cache::forget(static::getVaccineLotByIdKey($vaccine_lot->vaccine_id, $vaccine_lot->id));
         Cache::forget(static::getVaccineLotByLotIdKey($vaccine_lot->vaccine_id, $vaccine_lot->lot_id));

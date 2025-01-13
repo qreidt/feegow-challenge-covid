@@ -43,6 +43,11 @@ readonly class VaccineService
         return $this->repository->createVaccine($dto);
     }
 
+    public function findVaccineById(int $id): ?Vaccine {
+        $vaccines = $this->listVaccines();
+        return $vaccines->firstWhere('id', $id);
+    }
+
     /**
      * Atualizar dados de uma vacina
      *

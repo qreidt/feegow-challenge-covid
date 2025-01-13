@@ -20,4 +20,9 @@ Route::middleware([
     })->name('dashboard');
 
     Route::apiResource('/vaccines', Controllers\VaccineController::class);
+    Route::name('vaccines.')->prefix('/vaccines/{vaccine}')->group(function () {
+        Route::resource('/lots', Controllers\VaccineLotController::class)->only(['update', 'destroy']);
+    });
+
+
 });

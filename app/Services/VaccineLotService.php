@@ -44,7 +44,7 @@ readonly class VaccineLotService
      */
     public function findVaccineLotById(int $vaccine_id, int $vaccine_lot_id): ?VaccineLot
     {
-        $this->repository->findVaccineLotById($vaccine_id, $vaccine_lot_id);
+        return $this->repository->findVaccineLotById($vaccine_id, $vaccine_lot_id);
     }
 
     /**
@@ -56,7 +56,7 @@ readonly class VaccineLotService
      */
     public function findVaccineLotByLotId(int $vaccine_id, string $lot_id): ?VaccineLot
     {
-        $this->repository->findVaccineLotByLotId($vaccine_id, $lot_id);
+        return $this->repository->findVaccineLotByLotId($vaccine_id, $lot_id);
     }
 
     /**
