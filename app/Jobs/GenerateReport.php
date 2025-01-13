@@ -96,7 +96,7 @@ class GenerateReport implements ShouldQueue
     private function getEmployees(): LazyCollection
     {
         return Employee::query()
-            ->select(['name', 'cpf'])
+            ->select(['id', 'name', 'cpf'])
             ->whereDoesntHave('employeeVaccines')
             ->lazyById();
     }

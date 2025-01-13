@@ -14,7 +14,7 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'cpf' => $this->faker->cpf(),
+            'cpf' => $this->faker->unique()->cpf(),
             'name' => $this->faker->name(),
             'birth_date' => new CarbonImmutable($this->faker->dateTimeBetween('-60 years', '-20 years')),
             'has_comorbidity' => $this->faker->boolean(),
