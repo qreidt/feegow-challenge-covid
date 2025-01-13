@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dtos\Employee\CreateEmployeeVaccineDto;
 use App\Dtos\Employee\UpdateEmployeeVaccineDto;
+use App\Dtos\Vaccine\CreateVaccineLotDto;
 use App\Models\EmployeeVaccine;
 use App\Models\VaccineLot;
 
@@ -44,21 +45,27 @@ readonly class EmployeeVaccineService
     ): EmployeeVaccine
     {
         $vaccine_lot = $this->vaccineLotService->findVaccineLotById($dto->vaccine_id, $dto->vaccine_lot_id);
-        $vaccine_lot->fill([
-            'vaccine_id' => $dto->vaccine_id,
-            'lot_id' => $dto->lot_id,
-            'expiration_date' => $dto->expiration_date
-        ]);
 
-        if (! empty($vaccine_lot->getDirty())) {
-            $vaccine_lot = $this->handleDirtyVaccineLot($vaccine_lot);
-            $employee_vaccine->vaccine_lot_id = $vaccine_lot->id;
+        if (! $vaccine_lot) {
+            $vaccine_lot = $this->vaccineLotService->createVaccineLot(new CreateVaccineLotDto(
+                vaccine_id: $dto->vaccine_id,
+                lot_id: $dto->lot_id,
+                expiration_date: $dto->expiration_date,
+            ));
         }
 
-        $employee_vaccine->fill($dto->toArray());
-        $employee_vaccine->save();
+        $employee_vaccine->fill([
+            'vaccine_id' => $dto->vaccine_id,
+            'vaccine_lot_id' => $vaccine_lot->id,
+            'applied_at' => $dto->applied_at,
+        ]);
 
-        return $employee_vaccine;
+        $query = EmployeeVaccine::query()
+            ->where('employee_id', $employee_vaccine->employee_id)
+            ->where('dose_number', $employee_vaccine->dose_number);
+
+        $query->update($employee_vaccine->getDirty());
+        return $query->first();
     }
 
     /**
@@ -89,6 +96,10 @@ readonly class EmployeeVaccineService
      */
     public function deleteEmployeeVaccine(EmployeeVaccine $employee_vaccine): void
     {
-        $employee_vaccine->delete();
+        EmployeeVaccine::query()
+            ->where('employee_id', $employee_vaccine->employee_id)
+            ->where('dose_number', $employee_vaccine->dose_number)
+            ->where('vaccine_id', $employee_vaccine->vaccine_id)
+            ->delete();
     }
 }

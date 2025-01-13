@@ -24,6 +24,7 @@ readonly class UpdateEmployeeVaccineDto extends BaseDto
     {
         $validated = Validator::validate($data, [
             'vaccine_id' => ['required', 'int', 'exists:vaccines,id'],
+            'vaccine_lot_id' => ['nullable', 'int'],
             'dose_number' => ['required', 'int', 'min:1', 'max:3'],
             'applied_at' => ['required', 'date', 'before_or_equal:today'],
             'lot_id' => ['required', 'string', 'min:1', 'max:255'],
@@ -34,10 +35,10 @@ readonly class UpdateEmployeeVaccineDto extends BaseDto
             vaccine_id: $validated['vaccine_id'],
             vaccine_lot_id: $validated['vaccine_lot_id'],
             dose_number: $validated['dose_number'],
-            applied_at: $validated['applied_at'],
+            applied_at: CarbonImmutable::make($validated['applied_at']),
 
             lot_id: $validated['lot_id'],
-            expiration_date: $validated['expiration_date'],
+            expiration_date: CarbonImmutable::make($validated['expiration_date']),
         );
     }
 }

@@ -44,7 +44,15 @@ function openEmployeeFormModal(employee = null) {
 }
 
 function submitEmployeeForm() {
-    employee_form.post(route('employees.store'), {
+    if (! employee_form.id) {
+        return employee_form.post(route('employees.store'), {
+            onSuccess: () => {
+                show_employee_form_modal.value = false;
+            }
+        });
+    }
+
+    return employee_form.patch(route('employees.update', employee_form.id), {
         onSuccess: () => {
             show_employee_form_modal.value = false;
         }
@@ -89,7 +97,7 @@ function submitEmployeeForm() {
                             <InputLabel>CPF</InputLabel>
                             <div class="flex flex-col mt-2">
                                 <TextInput v-model="employee_form.cpf" class="w-full uppercase"
-                                           placeholder="Ex: 123.456.789-00" />
+                                           placeholder="Ex: 123.456.789-00" :disabled="employee_form.id" />
                                 <InputError class="mt-2" :message="employee_form.errors.cpf" />
                             </div>
                         </div>

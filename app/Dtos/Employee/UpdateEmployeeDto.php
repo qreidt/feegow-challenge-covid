@@ -26,7 +26,7 @@ readonly class UpdateEmployeeDto extends BaseDto
 
         return new static(
             name: $validated['name'],
-            birth_date: $validated['birth_date'],
+            birth_date: CarbonImmutable::make($validated['birth_date']),
             has_comorbidity: $validated['has_comorbidity'],
         );
     }
