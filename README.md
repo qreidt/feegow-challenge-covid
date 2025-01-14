@@ -92,6 +92,19 @@ o processamento de tarefas assíncronas, como a geração de relatórios e envio
 escalável. A combinação de cache e filas com Redis é uma solução confiável e amplamente adotada em sistemas de
 alto desempenho.
 
+### 3.5 MySQL
+O MySQL 8 oferece um desempenho otimizado em consultas de leitura intensiva, especialmente em cenários que envolvem
+um grande volume de dados. Sua implementação do InnoDB como mecanismo de armazenamento padrão fornece transações ACID,
+bloqueios em nível de linha e recuperação automática, tornando-o uma escolha confiável para aplicações de alto
+desempenho, como o sistema de controle de vacinação proposto no case. Além disso, o suporte aprimorado para índices
+gerados automaticamente, como índices invisíveis e índices em colunas JSON, facilita a criação de consultas otimizadas
+e aumenta a eficiência do acesso aos dados.
+
+Outro benefício do MySQL 8 é o suporte nativo para sharding horizontal (através de ferramentas como o MySQL Router
+e MySQL Shell), o que é ideal para escalabilidade em bases de dados muito grandes. Ele também possui melhorias no
+suporte a funções JSON, facilitando o trabalho com dados semiestruturados, algo cada vez mais comum em sistemas
+modernos.
+
 ## 4. Database ER
 ```mermaid
 erDiagram
