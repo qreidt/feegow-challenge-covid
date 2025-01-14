@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\Employee;
 use App\Models\EmployeeVaccine;
 use App\Models\Vaccine;
+use App\Models\VaccineLot;
+use App\Repositories\VaccineLotRepository;
+use App\Repositories\VaccineRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +25,7 @@ class HeavyDatabaseSeeder extends Seeder
 
         $this->seedEmployees();
         $this->seedEmployeeVaccines();
+        $this->triggerCaches();
     }
 
     private function seedEmployees(): void
@@ -70,5 +74,14 @@ class HeavyDatabaseSeeder extends Seeder
             DB::table('employee_vaccines')->insert($data);
             echo "Seeding Employee Vaccines [".number_format($employee->id)."/100,000] \n";
         });
+    }
+
+    private function triggerCaches(): void
+    {
+        $vaccineLotRepository = new VaccineLotRepository();
+        VaccineLot::select(['id', 'vaccine_id'])
+            ->lazyById()->each(function (VaccineLot $vaccineLot) use ($vaccineLotRepository) {
+                $vaccineLotRepository->findVaccineLotById($vaccineLot->vaccine_id, $vaccineLot->id);
+            });
     }
 }

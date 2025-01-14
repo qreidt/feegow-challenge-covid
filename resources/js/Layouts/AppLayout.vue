@@ -207,6 +207,15 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('vaccines.index')" :active="route().current('vaccines.*')">
+                            Vacinas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('employees.index')" :active="route().current('employees.*')">
+                            Funcionários
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('reports.index')" :active="route().current('reports.*')">
+                            Relatórios
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
