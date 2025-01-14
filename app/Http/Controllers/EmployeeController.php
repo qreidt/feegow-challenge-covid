@@ -15,6 +15,7 @@ use App\Services\EmployeeVaccineService;
 use App\Services\VaccineLotService;
 use App\Services\VaccineService;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -37,11 +38,20 @@ class EmployeeController extends Controller
      */
     public function index(): Response
     {
-        $employees = Employee::query()
+        $per_page = min((int) request()->query('items_per_page', 16), 64);
+
+        $employees = (request('archived') == 'true' ? Employee::onlyTrashed() : Employee::query())
             ->orderBy('name')
             ->with('employeeVaccines')
-            ->paginate()
+            ->when(request()->query('query'),
+                fn(Builder $query, string $search) => $query->where(function (Builder $query) use ($search) {
+                    return $query->whereLike('name', "%$search%")
+                        ->orWhereLike('cpf', "$search%");
+                }))
+            ->paginate($per_page)
             ->onEachSide(1);
+
+        //dd($employees->getCollection()->toArray());
 
         $employees->transform(function (Employee $employee) {
             $employee->anonimizeCpf();

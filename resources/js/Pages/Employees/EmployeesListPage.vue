@@ -33,6 +33,9 @@ const default_employee_form = {
 };
 
 let employee_form = useForm(default_employee_form);
+const search_form = useForm({
+    query: '', items_per_page: 16, archived: 'false',
+});
 
 function openEmployeeFormModal(employee = null) {
     employee_form = useForm(default_employee_form);
@@ -83,6 +86,21 @@ function archiveEmployee() {
     })
 }
 
+function submitSearch() {
+    search_form.get(route('employees.index'), {
+        preserveScroll: false,
+        preserveState: true,
+    });
+}
+
+function resetSearch() {
+    search_form.reset();
+    search_form.get(route('employees.index'), {
+        preserveScroll: false,
+        preserveState: true,
+    });
+}
+
 </script>
 
 <template>
@@ -98,7 +116,51 @@ function archiveEmployee() {
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+                <div class="bg-white dark:bg-slate-800 py-2 overflow-hidden shadow-xl sm:rounded-lg px-4 sm:px-6 lg:px-8">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 text-gray-800 dark:text-gray-50">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <h2 class="text-lg py-4">Opções de Busca</h2>
+
+                            <form @submit.prevent="submitSearch" class="grid md:grid-cols-12 gap-4">
+                                <div class="sm:col-span-7">
+                                    <InputLabel>Busca Simples</InputLabel>
+                                    <div class="flex flex-col mt-2">
+                                        <TextInput v-model="search_form.query" class="w-full"
+                                                   placeholder="Buscar por Nome ou CPF" />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <InputLabel>Itens por Página</InputLabel>
+                                    <div class="flex flex-col mt-2">
+                                        <TextInput type="number" v-model="search_form.items_per_page" class="w-full"
+                                                   placeholder="Buscar por Nome ou CPF" />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <InputLabel>Arquivados</InputLabel>
+                                    <div class="flex flex-col mt-2">
+                                        <Select @change="submitSearch" v-model="search_form.archived" class="w-full">
+                                            <option value="true">Sim</option>
+                                            <option value="false">Não</option>
+                                        </Select>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-full flex flex-row space-x-4 justify-end">
+                                    <SecondaryButton @click="resetSearch" :disabled="search_form.processing">
+                                        Reset
+                                    </SecondaryButton>
+                                    <PrimaryButton type="submit" :disabled="search_form.processing">
+                                        Buscar
+                                    </PrimaryButton>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <EmployeesList
                     v-bind="{employees}" @rowClicked="openEmployeeFormModal"
                     @confirmDelete="confirmEmployeeArchive" />
