@@ -139,7 +139,7 @@ function archiveEmployee() {
 
                         <div class="">
                             <InputLabel>Possui Comorbidade</InputLabel>
-                            <div class="flex flex-row mt-2">
+                            <div class="flex flex-col mt-2">
                                 <Select v-model="employee_form.has_comorbidity" class="w-full">
                                     <option :value="true">Sim</option>
                                     <option :value="false">Não</option>
@@ -165,7 +165,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_1.vaccine_id" class="">
                                     <InputLabel>Data Aplicação</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_1.applied_at" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_1.applied_at']" />
                                     </div>
@@ -173,7 +173,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_1.vaccine_id" class="">
                                     <InputLabel>Lote Vacina</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput
                                             v-model="employee_form.dose_1.lot_id"
                                             class="w-full" placeholder="Ex: XXX-9876" />
@@ -183,7 +183,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_1.vaccine_id" class="">
                                     <InputLabel>Validade do Lote</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_1.expiration_date" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_1.expiration_date']" />
                                     </div>
@@ -197,7 +197,7 @@ function archiveEmployee() {
                             <div class="ml-2 grid md:grid-cols-2 gap-x-3 gap-y-4">
                                 <div class="">
                                     <InputLabel>Marca Vacina</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <Select v-model="employee_form.dose_2.vaccine_id" class="w-full">
                                             <option value="">Pendente</option>
                                             <option v-for="vaccine in vaccines" :value="vaccine.id">
@@ -209,7 +209,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_2.vaccine_id" class="">
                                     <InputLabel>Data Aplicação</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_2.applied_at" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_2.applied_at']" />
                                     </div>
@@ -217,7 +217,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_2.vaccine_id" class="">
                                     <InputLabel>Lote Vacina</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput
                                             v-model="employee_form.dose_2.lot_id"
                                             class="w-full" placeholder="Ex: XXX-9876" />
@@ -227,7 +227,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_2.vaccine_id" class="">
                                     <InputLabel>Validade do Lote</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_2.expiration_date" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_2.expiration_date']" />
                                     </div>
@@ -241,7 +241,7 @@ function archiveEmployee() {
                             <div class="ml-2 grid md:grid-cols-2 gap-x-3 gap-y-4">
                                 <div class="">
                                     <InputLabel>Marca Vacina</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <Select v-model="employee_form.dose_3.vaccine_id" class="w-full">
                                             <option value="">Pendente</option>
                                             <option v-for="vaccine in vaccines" :value="vaccine.id">
@@ -253,7 +253,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_3.vaccine_id" class="">
                                     <InputLabel>Data Aplicação</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_3.applied_at" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_3.applied_at']" />
                                     </div>
@@ -261,7 +261,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_3.vaccine_id" class="">
                                     <InputLabel>Lote Vacina</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput
                                             v-model="employee_form.dose_3.lot_id"
                                             class="w-full" placeholder="Ex: XXX-9876" />
@@ -271,7 +271,7 @@ function archiveEmployee() {
 
                                 <div v-if="employee_form.dose_3.vaccine_id" class="">
                                     <InputLabel>Validade do Lote</InputLabel>
-                                    <div class="flex flex-row mt-2">
+                                    <div class="flex flex-col mt-2">
                                         <TextInput type="date" v-model="employee_form.dose_3.expiration_date" class="w-full"/>
                                         <InputError class="mt-2" :message="employee_form.errors['dose_3.expiration_date']" />
                                     </div>

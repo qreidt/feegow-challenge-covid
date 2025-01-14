@@ -40,7 +40,8 @@ class EmployeeController extends Controller
         $employees = Employee::query()
             ->orderBy('name')
             ->with('employeeVaccines')
-            ->paginate();
+            ->paginate()
+            ->onEachSide(1);
 
         $employees->transform(function (Employee $employee) {
             $employee->anonimizeCpf();
