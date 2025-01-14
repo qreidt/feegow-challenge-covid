@@ -167,7 +167,8 @@ function resetSearch() {
             </div>
         </div>
 
-        <DialogModal maxWidth="xl" :show="show_employee_form_modal" @close="show_employee_form_modal = false">
+        <DialogModal maxWidth="xl" :show="show_employee_form_modal" @close="show_employee_form_modal = false"
+            :closeable="! employee_form.processing">
             <template #title>
                 {{ employee_form.id ? 'Atualizar Ficha de Funcionário' : 'Nova Ficha de Funcionário'}}
             </template>
@@ -344,8 +345,11 @@ function resetSearch() {
 
 
                     <div class="flex flex-row space-x-4 justify-end">
-                        <SecondaryButton @click="show_employee_form_modal = false">Cancelar</SecondaryButton>
-                        <PrimaryButton type="submit">Salvar</PrimaryButton>
+                        <SecondaryButton @click="show_employee_form_modal = false"
+                                         :disabled="employee_form.processing">
+                            Cancelar
+                        </SecondaryButton>
+                        <PrimaryButton type="submit" :disabled="employee_form.processing">Salvar</PrimaryButton>
                     </div>
                 </form>
             </template>
@@ -353,6 +357,7 @@ function resetSearch() {
 
         <DialogModal
             maxWidth="md" :show="confirm_employee_archive_modal" @close="confirm_employee_archive_modal = false"
+            :closeable="! employee_form.processing"
         >
             <template #title>
                 Confirmar Arquivamento de Funcionário
@@ -363,8 +368,13 @@ function resetSearch() {
                 <p class="mt-2">Esta ação poderá ser desfeita futuramente.</p>
             </template>
             <template #footer>
-                <SecondaryButton @click="confirm_employee_archive_modal = false">Cancelar</SecondaryButton>
-                <DangerButton @click="archiveEmployee()">Sim, Arquivar</DangerButton>
+                <SecondaryButton @click="confirm_employee_archive_modal = false"
+                                 :disabled="employee_form.processing">
+                    Cancelar
+                </SecondaryButton>
+                <DangerButton @click="archiveEmployee()" :disabled="employee_form.processing">
+                    Sim, Arquivar
+                </DangerButton>
             </template>
         </DialogModal>
     </AppLayout>
