@@ -51,7 +51,9 @@ class VaccineController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $vaccine_lots = $this->vaccineLotService->getVaccineLots($vaccine);
+        $vaccine_lots = $this->vaccineLotService->getPaginatedVaccineLots($vaccine, request('page'))
+            ->onEachSide(1);
+
         return Inertia::render('Vaccines/VaccineShowPage', compact('vaccine', 'vaccine_lots'));
     }
 

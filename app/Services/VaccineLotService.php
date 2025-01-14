@@ -8,6 +8,7 @@ use App\Models\Vaccine;
 use App\Models\VaccineLot;
 use App\Repositories\VaccineLotRepository;
 use Carbon\CarbonImmutable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 readonly class VaccineLotService
@@ -33,6 +34,23 @@ readonly class VaccineLotService
         }
 
         return $vaccine_lots;
+    }
+
+    public function getPaginatedVaccineLots(Vaccine $vaccine, int $page = 1): LengthAwarePaginator
+    {
+        $per_page = 20;
+        $vaccine_lots = $this->getVaccineLots($vaccine);
+
+        $total_count = $vaccine_lots->count();
+        $data = $vaccine_lots->skip($per_page * ($page - 1))->take($per_page);
+
+        return new LengthAwarePaginator(
+            items: $data,
+            total: $total_count,
+            perPage: $per_page,
+            currentPage: $page,
+            options: ['path' => request()->url()]
+        );
     }
 
     /**

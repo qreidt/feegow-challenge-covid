@@ -1,7 +1,8 @@
 <script setup>
 import {$dateFormat} from "../Helpers/date-helper.js";
+import Pagination from "@/Components/Pagination.vue";
 
-defineProps({vaccine_lots: Array})
+defineProps({vaccine_lots: Object})
 defineEmits(['rowClicked']);
 </script>
 
@@ -26,7 +27,7 @@ defineEmits(['rowClicked']);
                     <tbody class="divide-y divide-gray-300 dark:divide-gray-800">
                     <tr
                         @click="$emit('rowClicked', vaccine_lot)"
-                        v-for="vaccine_lot in vaccine_lots" :key="vaccine_lot.id"
+                        v-for="vaccine_lot in vaccine_lots.data" :key="vaccine_lot.id"
                         class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                     >
                         <td colspan="2" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium sm:pl-0">
@@ -45,5 +46,6 @@ defineEmits(['rowClicked']);
                 </table>
             </div>
         </div>
+        <Pagination :pagination="vaccine_lots" />
     </div>
 </template>
