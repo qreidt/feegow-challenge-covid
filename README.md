@@ -41,6 +41,16 @@ erDiagram
     employees || -- o{ employee_vaccines : has-many
     vaccines |o -- o{ employee_vaccines : has-many
     vaccine_lots |o -- o{ employee_vaccines : has-many
+    
+    reports {
+        int id PK
+        string name
+        string type
+        string file_path
+        timestamp ready_at
+        timestamp created_at
+        timestamp updated_at
+    }
 ```
 
 ### Vacinas
@@ -52,3 +62,9 @@ erDiagram
 - Um funcionário pode receber até 3 doses de vacina.
 - Cada vacina aplicada no funcionário pode ser de marca diferente
 e possuir lotes e datas de validades diferentes entre elas.
+
+## Relatórios
+Ao criar um relatório, primeiro é salvo um registro apenas com seu id e timestamps
+enquanto um job para processamento assíncrono é processado por workers.
+Após a finalização do processamento do relatório, suas informações são salvas e é emitido
+um evento para atualizar a página de relatórios em tempo real.
