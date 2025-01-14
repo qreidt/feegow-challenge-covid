@@ -33,8 +33,11 @@ class HeavyDatabaseSeeder extends Seeder
         $count = 0;
         echo "Seeding Employees...\n";
         while ($count < 100_000) {
-            $employees = Employee::factory(2000)->make()->toArray();
-            DB::table('employees')->insert($employees);
+            $employees = Employee::factory(1000)->make()
+                ->map(fn($employee) => $employee->getAttributes())
+                ->all();
+
+            Employee::insert($employees);
 
             $count = Employee::count();
             echo "Seeding Employees [".number_format($count)."/100,000] \n";
@@ -69,9 +72,11 @@ class HeavyDatabaseSeeder extends Seeder
                 ['dose_number' => 1],
                 ['dose_number' => 2],
                 ['dose_number' => 3],
-            )->make($base_state)->toArray();
+            )->make($base_state)
+                ->map(fn($model) => $model->getAttributes())
+                ->all();
 
-            DB::table('employee_vaccines')->insert($data);
+            EmployeeVaccine::insert($data);
             echo "Seeding Employee Vaccines [".number_format($employee->id)."/100,000] \n";
         });
     }
@@ -79,9 +84,12 @@ class HeavyDatabaseSeeder extends Seeder
     private function triggerCaches(): void
     {
         $vaccineLotRepository = new VaccineLotRepository();
+        $total = VaccineLot::count();
+
         VaccineLot::select(['id', 'vaccine_id'])
-            ->lazyById()->each(function (VaccineLot $vaccineLot) use ($vaccineLotRepository) {
+            ->lazyById()->each(function (VaccineLot $vaccineLot, int $i) use ($vaccineLotRepository, $total) {
                 $vaccineLotRepository->findVaccineLotById($vaccineLot->vaccine_id, $vaccineLot->id);
+                echo "Triggering Vaccine Lot Cache [".number_format($i)."/100,000] \n";
             });
     }
 }
