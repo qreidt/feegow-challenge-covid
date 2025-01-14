@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->date('applied_at');
 
             $table->primary(['employee_id', 'dose_number']);
-            $table->index(['employee_id', 'dose_number', 'vaccine_id', 'vaccine_lot_id']);
         });
     }
 

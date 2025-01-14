@@ -24,7 +24,7 @@ readonly class CreateEmployeeDto extends BaseDto
             'cpf' => [
                 'required', 'string', 'size:14',
                 'regex:/^[A-Z0-9]{3}\.[A-Z0-9]{3}\.[A-Z0-9]{3}-[A-Z0-9]{2}$/',
-                'unique:users,cpf'
+                'unique:employees,cpf'
             ],
             'birth_date' => ['required', 'string', 'date', 'before:today'],
             'has_comorbidity' => ['required', 'boolean'],
